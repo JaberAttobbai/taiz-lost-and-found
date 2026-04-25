@@ -1,0 +1,30 @@
+@import 'tailwindcss';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+@source '../../app/**/*.php';
+
+@theme {
+    /* Brand Colors based on Logo */
+    --color-primary: #0F7A5C;
+    --color-primary-light: #18A07A;
+    --color-primary-dark: #0B5C45;
+    
+    --color-brand-text: #2F2F2F;
+    --color-brand-bg: #F9FAFB;
+
+    /* Base Font Override */
+    --font-sans: 'Cairo', sans-serif;
+}
+
+@layer base {
+    html {
+        direction: rtl;
+        font-family: 'Cairo', sans-serif;
+    }
+
+    body {
+        @apply bg-brand-bg text-brand-text antialiased selection:bg-primary selection:text-white transition-colors duration-300 font-sans;
+    }
+}
