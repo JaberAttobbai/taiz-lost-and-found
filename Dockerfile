@@ -42,10 +42,11 @@ COPY docker/nginx.conf /etc/nginx/sites-enabled/default
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
-# Create SQLite database file
-RUN touch /var/www/database/database.sqlite
-RUN chown www-data:www-data /var/www/database/database.sqlite
-RUN chmod 664 /var/www/database/database.sqlite
+# Setup database permissions
+RUN mkdir -p /var/www/database && \
+    touch /var/www/database/database.sqlite && \
+    chown -R www-data:www-data /var/www/database && \
+    chmod -R 775 /var/www/database
 
 EXPOSE 80
 

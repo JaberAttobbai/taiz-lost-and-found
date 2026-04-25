@@ -1,9 +1,10 @@
 #!/bin/sh
 
 # Make sure SQLite db exists and has permissions
+mkdir -p /var/www/database
 touch /var/www/database/database.sqlite
-chown www-data:www-data /var/www/database/database.sqlite
-chmod 664 /var/www/database/database.sqlite
+chown -R www-data:www-data /var/www/database
+chmod -R 775 /var/www/database
 
 # Run migrations and seed the database if it's empty
 php artisan migrate --force
