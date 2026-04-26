@@ -13,6 +13,11 @@ php artisan db:seed --force
 # Create storage symlink
 php artisan storage:link
 
+# Update Nginx to use the port provided by Render
+PORT="${PORT:-80}"
+sed -i "s/listen 0.0.0.0:80;/listen 0.0.0.0:$PORT;/g" /etc/nginx/sites-enabled/default
+sed -i "s/listen \[::\]:80;/listen \[::\]:$PORT;/g" /etc/nginx/sites-enabled/default
+
 # Start Nginx
 service nginx start
 
