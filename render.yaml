@@ -14,13 +14,5 @@ services:
         value: false
       - key: APP_URL
         value: https://taiz-lost-and-found.onrender.com
-      - key: DB_CONNECTION
-        value: sqlite
-      - key: DB_DATABASE
-        value: /var/www/database/database.sqlite
       - key: LOG_CHANNEL
         value: stderr
-    disk:
-      name: sqlite-data
-      mountPath: /var/www/database
-      sizeGB: 1
