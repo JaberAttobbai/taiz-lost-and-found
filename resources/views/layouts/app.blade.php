@@ -5,22 +5,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
+        <meta name="google-site-verification" content="ضع_الكود_الخاص_بك_هنا" />
+
         <title>Taiz-Lost-Found</title>
         <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
 
-        <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased text-brand-text bg-brand-bg">
         <div class="min-h-screen">
             @include('layouts.navigation')
 
-            <!-- Page Heading -->
             @isset($header)
                 <header class="bg-white shadow">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -29,16 +28,13 @@
                 </header>
             @endisset
 
-            <!-- Page Content -->
             <main>
                 {{ $slot }}
             </main>
         </div>
 
-        <!-- Toast Notifications -->
         <x-flash-message />
 
-        <!-- Confirmation Modal (Global) -->
         <x-confirm-modal />
     </body>
 </html>
