@@ -7,7 +7,19 @@
 
         <meta name="google-site-verification" content="ضع_الكود_الخاص_بك_هنا" />
 
-        <title>Taiz-Lost-Found</title>
+        <title>@yield('title', 'منصة مفقودات وموجودات تعز')</title>
+        
+        <meta name="description" content="@yield('description', 'منصة مفقودات وموجودات تعز. وجهتك الأولى والأكثر أماناً للبحث عن مفقوداتك أو الإعلان عما وجدته في محافظة تعز.')">
+
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "منصة مفقودات وموجودات تعز",
+          "url": "https://taiz-lost-and-found.onrender.com/"
+        }
+        </script>
+        
         <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
