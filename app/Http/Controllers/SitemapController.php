@@ -33,7 +33,9 @@ class SitemapController extends Controller
      */
     private function generateSitemap(): string
     {
-        $baseUrl = config('app.url');
+        // Hardcoded to production URL — config('app.url') returns localhost on Render
+        // and url() is unreliable with caching (first request may be a health check)
+        $baseUrl = 'https://taiz-lost-and-found.onrender.com';
 
         // Fetch all items with only the columns we need
         $items = Item::select('id', 'updated_at')

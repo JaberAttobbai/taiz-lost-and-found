@@ -16,6 +16,9 @@ php artisan storage:link
 # Remove static sitemap.xml if it exists (Laravel route handles this dynamically)
 rm -f /var/www/public/sitemap.xml
 
+# Clear application cache (ensures sitemap cache is refreshed on deploy)
+php artisan cache:clear
+
 # Update Nginx to use the port provided by Render
 PORT="${PORT:-80}"
 sed -i "s/listen 80;/listen ${PORT};/g" /etc/nginx/sites-enabled/default
