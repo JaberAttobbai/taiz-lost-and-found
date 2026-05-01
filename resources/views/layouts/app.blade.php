@@ -5,12 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <meta name="google-site-verification" content="google2ed3bbda07a07420" />
+        <meta name="google-site-verification" content="ضع_الكود_الخاص_بك_هنا" />
 
         <title>@yield('title', 'منصة مفقودات وموجودات تعز')</title>
         
         <meta name="description" content="@yield('description', 'منصة مفقودات وموجودات تعز. وجهتك الأولى والأكثر أماناً للبحث عن مفقوداتك أو الإعلان عما وجدته في محافظة تعز.')">
-        <link rel="canonical" href="{{ url()->current() }}">
 
         <script type="application/ld+json">
         {
