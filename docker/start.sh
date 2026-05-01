@@ -17,6 +17,8 @@ php artisan storage:link
 rm -f /var/www/public/sitemap.xml
 
 # Clear application cache (ensures sitemap cache is refreshed on deploy)
+php artisan config:clear
+php artisan view:clear
 php artisan cache:clear
 
 # Update Nginx to use the port provided by Render
