@@ -19,11 +19,10 @@
     - زر "إضافة إعلان جديد"
 --}}
 
-{{-- === SEO: منع فهرسة لوحة التحكم === --}}
-@section('meta_robots', 'noindex, nofollow')
-@section('title', 'إعلاناتي — منصة مفقودات تعز')
-
-<x-app-layout>
+<x-app-layout
+    title="إعلاناتي — منصة مفقودات تعز"
+    meta-robots="noindex, nofollow"
+>
     <x-slot name="header">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">

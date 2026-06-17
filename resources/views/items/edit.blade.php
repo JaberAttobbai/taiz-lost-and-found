@@ -20,11 +20,10 @@
     يرسل النموذج PUT إلى route('items.update', $item) عبر UpdateItemRequest.
 --}}
 
-{{-- === SEO: منع فهرسة صفحة التعديل === --}}
-@section('meta_robots', 'noindex, nofollow')
-@section('title', 'تعديل الإعلان — منصة مفقودات تعز')
-
-<x-app-layout>
+<x-app-layout
+    title="تعديل الإعلان — منصة مفقودات تعز"
+    meta-robots="noindex, nofollow"
+>
     <x-slot name="header">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">

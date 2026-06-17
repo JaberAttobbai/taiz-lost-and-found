@@ -15,76 +15,56 @@
     - BreadcrumbList للتنقل
 --}}
 
-{{-- === SEO: عنوان ديناميكي === --}}
-@section('title'){{ $item->title }} — {{ $item->type === 'lost' ? 'مفقود' : 'موجود' }} في {{ $item->neighborhood->name }}@endsection
 
-{{-- === SEO: وصف ديناميكي (أول 160 حرف من الوصف) === --}}
-@section('description'){{ Str::limit($item->description, 160) }}@endsection
+{{-- === حساب قيم SEO من بيانات الإعلان === --}}
+@php
+    $seoTitle = $item->title . ' — ' . ($item->type === 'lost' ? 'مفقود' : 'موجود') . ' في ' . $item->neighborhood->name;
+    $seoDescription = Str::limit($item->description, 160);
+    $seoOgImage = $item->image_path ? Storage::url($item->image_path) : null;
+@endphp
 
-{{-- === SEO: Open Graph نوع المقال === --}}
-@section('og_type', 'article')
+<x-app-layout
+    :title="$seoTitle"
+    :description="$seoDescription"
+    og-type="article"
+    :og-image="$seoOgImage"
+>
+    {{-- Schema.org Article + BreadcrumbList --}}
+    <x-slot name="schema">
+        @php
+            $schemaArticle = [
+                '@context' => 'https://schema.org',
+                '@type' => 'Article',
+                'headline' => $item->title,
+                'description' => Str::limit($item->description, 300),
+                'author' => ['@type' => 'Person', 'name' => $item->user->name],
+                'datePublished' => $item->created_at->toIso8601String(),
+                'dateModified' => $item->updated_at->toIso8601String(),
+                'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => route('items.show', $item)],
+                'publisher' => [
+                    '@type' => 'Organization',
+                    'name' => 'منصة مفقودات وموجودات تعز',
+                    'logo' => ['@type' => 'ImageObject', 'url' => asset('images/logo.png')],
+                ],
+                'articleSection' => $item->category->name,
+                'keywords' => $item->type === 'lost' ? 'مفقود' : 'موجود',
+            ];
+            if ($item->image_path) {
+                $schemaArticle['image'] = Storage::url($item->image_path);
+            }
 
-{{-- === SEO: صورة المشاركة (صورة الإعلان أو الشعار) === --}}
-@if($item->image_path)
-@section('og_image', Storage::url($item->image_path))
-@endif
-
-{{-- === SEO: Schema.org Article + BreadcrumbList === --}}
-@section('schema')
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": @json($item->title),
-  "description": @json(Str::limit($item->description, 300)),
-  "author": {
-    "@type": "Person",
-    "name": @json($item->user->name)
-  },
-  "datePublished": "{{ $item->created_at->toIso8601String() }}",
-  "dateModified": "{{ $item->updated_at->toIso8601String() }}",
-  @if($item->image_path)
-  "image": "{{ Storage::url($item->image_path) }}",
-  @endif
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "{{ route('items.show', $item) }}"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "منصة مفقودات وموجودات تعز",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "{{ asset('images/logo.png') }}"
-    }
-  },
-  "articleSection": @json($item->category->name),
-  "keywords": @json($item->type === 'lost' ? 'مفقود' : 'موجود') 
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "الرئيسية",
-      "item": "{{ route('home') }}"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": @json($item->title),
-      "item": "{{ route('items.show', $item) }}"
-    }
-  ]
-}
-</script>
-@endsection
-
-<x-app-layout>
+            $schemaBreadcrumb = [
+                '@context' => 'https://schema.org',
+                '@type' => 'BreadcrumbList',
+                'itemListElement' => [
+                    ['@type' => 'ListItem', 'position' => 1, 'name' => 'الرئيسية', 'item' => route('home')],
+                    ['@type' => 'ListItem', 'position' => 2, 'name' => $item->title, 'item' => route('items.show', $item)],
+                ],
+            ];
+        @endphp
+        <script type="application/ld+json">{!! json_encode($schemaArticle, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}</script>
+        <script type="application/ld+json">{!! json_encode($schemaBreadcrumb, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}</script>
+    </x-slot>
     {{-- Header: عنوان الصفحة + رابط العودة للقائمة --}}
     <x-slot name="header">
         <div class="flex justify-between items-center">

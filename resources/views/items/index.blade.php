@@ -24,46 +24,44 @@
     - canonical يشير للصفحة النظيفة بدون query params
 --}}
 
-{{-- === SEO: العنوان والوصف الديناميكي === --}}
-@section('title')
-@if(request('search'))
-نتائج البحث عن "{{ request('search') }}" — منصة مفقودات تعز
-@elseif(request('type') === 'lost')
-المفقودات في تعز — منصة مفقودات وموجودات تعز
-@elseif(request('type') === 'found')
-الموجودات في تعز — منصة مفقودات وموجودات تعز
-@else
-منصة مفقودات وموجودات تعز — ابحث عن مفقوداتك في تعز
-@endif
-@endsection
+{{-- === حساب قيم SEO ديناميكياً === --}}
+@php
+    // العنوان الديناميكي
+    if (request('search')) {
+        $seoTitle = 'نتائج البحث عن "' . request('search') . '" — منصة مفقودات تعز';
+    } elseif (request('type') === 'lost') {
+        $seoTitle = 'المفقودات في تعز — منصة مفقودات وموجودات تعز';
+    } elseif (request('type') === 'found') {
+        $seoTitle = 'الموجودات في تعز — منصة مفقودات وموجودات تعز';
+    } else {
+        $seoTitle = 'منصة مفقودات وموجودات تعز — ابحث عن مفقوداتك في تعز';
+    }
 
-@section('description')
-@if(request('search'))
-نتائج البحث عن "{{ request('search') }}" في منصة مفقودات وموجودات تعز. ابحث عن أغراضك المفقودة أو أعلن عما وجدته.
-@else
-منصة مفقودات وموجودات تعز — وجهتك الأولى والأكثر أماناً للبحث عن مفقوداتك أو الإعلان عما وجدته في محافظة تعز. ابحث، أعلن، وتواصل مباشرة.
-@endif
-@endsection
+    // الوصف الديناميكي
+    $seoDescription = request('search')
+        ? 'نتائج البحث عن "' . request('search') . '" في منصة مفقودات وموجودات تعز. ابحث عن أغراضك المفقودة أو أعلن عما وجدته.'
+        : 'منصة مفقودات وموجودات تعز — وجهتك الأولى والأكثر أماناً للبحث عن مفقوداتك أو الإعلان عما وجدته في محافظة تعز. ابحث، أعلن، وتواصل مباشرة.';
 
-{{-- === SEO: منع فهرسة صفحات البحث والفلاتر (duplicate content) === --}}
-@if(request()->anyFilled(['search', 'type', 'category_id', 'neighborhood_id']) || request('page', 1) > 1)
-@section('meta_robots', 'noindex, follow')
-@endif
+    // منع فهرسة صفحات الفلاتر والبحث (duplicate content)
+    $hasFilters = request()->anyFilled(['search', 'type', 'category_id', 'neighborhood_id']);
+    $seoRobots = ($hasFilters || request('page', 1) > 1) ? 'noindex, follow' : 'index, follow';
+@endphp
 
-{{-- === SEO: Canonical URL يشير للصفحة النظيفة === --}}
-@section('canonical_url', route('home'))
-
-{{-- === SEO: روابط Pagination للـ head === --}}
-@section('extra_head')
-@if($items->previousPageUrl())
-<link rel="prev" href="{{ $items->previousPageUrl() }}">
-@endif
-@if($items->nextPageUrl())
-<link rel="next" href="{{ $items->nextPageUrl() }}">
-@endif
-@endsection
-
-<x-app-layout>
+<x-app-layout
+    :title="$seoTitle"
+    :description="$seoDescription"
+    :meta-robots="$seoRobots"
+    :canonical-url="route('home')"
+>
+    {{-- Pagination SEO links --}}
+    <x-slot name="extraHead">
+        @if($items->previousPageUrl())
+        <link rel="prev" href="{{ $items->previousPageUrl() }}">
+        @endif
+        @if($items->nextPageUrl())
+        <link rel="next" href="{{ $items->nextPageUrl() }}">
+        @endif
+    </x-slot>
     {{-- ===== القسم الأول: Hero Section ===== --}}
     {{-- خلفية كبيرة مع عنوان المنصة ودعوة لإضافة إعلان --}}
     <div class="relative overflow-hidden bg-primary-dark">

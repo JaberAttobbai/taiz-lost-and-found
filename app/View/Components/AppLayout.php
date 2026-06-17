@@ -11,16 +11,28 @@ use Illuminate\View\View;
  * يُستخدم في ملفات Blade عبر الوسم: <x-app-layout>
  * يرتبط بملف القالب: resources/views/layouts/app.blade.php
  *
- * هذا المكون يُغلّف جميع صفحات التطبيق العامة والمحمية:
- * - الصفحة الرئيسية (items/index)
- * - صفحات الإعلانات (show, create, edit)
- * - لوحة التحكم (dashboard)
- * - الملف الشخصي (profile)
- *
- * يوفر slot اختياري "header" لعرض عنوان الصفحة.
+ * === SEO Props ===
+ * يقبل خصائص SEO اختيارية تُمرر من كل صفحة:
+ * - title: عنوان الصفحة
+ * - description: وصف الصفحة
+ * - metaRobots: تعليمات لمحركات البحث (index/noindex)
+ * - canonicalUrl: الرابط الأساسي
+ * - ogType: نوع Open Graph (website/article)
+ * - ogImage: صورة المشاركة
+ * - schema: Schema.org JSON-LD مخصص
+ * - extraHead: محتوى إضافي للـ <head>
  */
 class AppLayout extends Component
 {
+    public function __construct(
+        public string $title = 'منصة مفقودات وموجودات تعز — ابحث عن مفقوداتك في تعز',
+        public string $description = 'منصة مفقودات وموجودات تعز — وجهتك الأولى والأكثر أماناً للبحث عن مفقوداتك أو الإعلان عما وجدته في محافظة تعز. ابحث، أعلن، وتواصل مباشرة.',
+        public string $metaRobots = 'index, follow',
+        public ?string $canonicalUrl = null,
+        public string $ogType = 'website',
+        public ?string $ogImage = null,
+    ) {}
+
     /**
      * الحصول على View المرتبط بهذا المكون.
      *
