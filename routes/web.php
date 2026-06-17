@@ -11,11 +11,8 @@ Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap')
 // TEMPORARY: Debug route to diagnose 500 error — REMOVE AFTER FIXING
 Route::get('/debug-health', function () {
     $results = [];
-    
-    // Test 1: Basic response
     $results['php'] = 'OK';
     
-    // Test 2: Database connection
     try {
         \DB::connection()->getPdo();
         $results['db_connection'] = 'OK (' . config('database.default') . ')';
@@ -23,31 +20,22 @@ Route::get('/debug-health', function () {
         $results['db_connection'] = 'FAILED: ' . $e->getMessage();
     }
     
-    // Test 3: Items count
-    try {
-        $results['items_count'] = \App\Models\Item::count();
-    } catch (\Exception $e) {
-        $results['items_count'] = 'FAILED: ' . $e->getMessage();
-    }
-    
-    // Test 4: Categories count
-    try {
-        $results['categories_count'] = \App\Models\Category::count();
-    } catch (\Exception $e) {
-        $results['categories_count'] = 'FAILED: ' . $e->getMessage();
-    }
-    
-    // Test 5: Items with relationships (what homepage does)
-    try {
-        $items = \App\Models\Item::with(['user', 'category', 'neighborhood'])->latest()->take(1)->get();
-        $results['items_with_relations'] = 'OK (' . $items->count() . ' items)';
-    } catch (\Exception $e) {
-        $results['items_with_relations'] = 'FAILED: ' . $e->getMessage();
-    }
-    
-    // Test 6: APP_URL
+    $results['items_count'] = \App\Models\Item::count();
+    $results['categories_count'] = \App\Models\Category::count();
+    $results['neighborhoods_count'] = \App\Models\Neighborhood::count();
     $results['app_url'] = config('app.url');
-    $results['app_env'] = config('app.env');
+    
+    // Test: Actually render the homepage view (this is what's failing)
+    try {
+        $query = \App\Models\Item::with(['user', 'category', 'neighborhood'])->latest();
+        $items = $query->paginate(12);
+        $categories = \App\Models\Category::orderBy('name')->get();
+        $neighborhoods = \App\Models\Neighborhood::orderBy('name')->get();
+        $html = view('items.index', compact('items', 'categories', 'neighborhoods'))->render();
+        $results['view_render'] = 'OK (' . strlen($html) . ' bytes)';
+    } catch (\Throwable $e) {
+        $results['view_render'] = 'FAILED: ' . $e->getMessage() . ' in ' . basename($e->getFile()) . ':' . $e->getLine();
+    }
     
     return response()->json($results, 200, [], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 });

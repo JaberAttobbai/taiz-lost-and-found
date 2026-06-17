@@ -1,3 +1,24 @@
+{{--
+    =============================================
+    شريط التنقل (layouts/navigation.blade.php)
+    =============================================
+
+    يُضمن في القالب الأساسي عبر @include('layouts.navigation').
+    يستخدم Alpine.js لإدارة فتح/إغلاق القائمة المحمولة.
+
+    الأقسام:
+    1. Desktop Nav: الشعار + روابط التنقل + زر إضافة إعلان + قائمة المستخدم
+    2. Mobile Nav (Hamburger): نفس المحتوى بتنسيق عمودي
+    
+    الحالات:
+    - @auth: يعرض اسم المستخدم + قائمة (حسابي، تسجيل خروج) + زر إضافة إعلان
+    - @guest: يعرض زر "تسجيل الدخول" + زر "حساب جديد"
+
+    يستخدم:
+    - x-nav-link: مكون رابط التنقل (مع حالة active)
+    - x-dropdown: قائمة منسدلة لإعدادات المستخدم
+    - x-responsive-nav-link: رابط للقائمة المحمولة
+--}}
 <nav x-data="{ open: false }" class="bg-white/80 backdrop-blur-lg border-b border-gray-100 sticky top-0 z-50 transition-all duration-300 shadow-sm">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

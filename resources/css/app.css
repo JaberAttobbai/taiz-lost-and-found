@@ -1,29 +1,55 @@
+/**
+ * =============================================
+ * الأنماط الرئيسية للتطبيق (app.css)
+ * =============================================
+ *
+ * يستخدم TailwindCSS v4 مع @theme لتعريف الألوان والخطوط.
+ * 
+ * نظام الألوان:
+ * - primary (#0F7A5C)      : اللون الأخضر الرئيسي (مستوحى من الشعار)
+ * - primary-light (#18A07A) : تدرج فاتح (أزرار، gradients)
+ * - primary-dark (#0B5C45)  : تدرج داكن (hover، Hero section)
+ * - brand-text (#2F2F2F)    : لون النصوص الأساسي (رمادي داكن)
+ * - brand-bg (#F9FAFB)      : لون خلفية الصفحات (رمادي فاتح جداً)
+ *
+ * الخط: Cairo — خط عربي من Google Fonts يدعم RTL
+ */
+
 @import 'tailwindcss';
+
+/* مصادر Tailwind: ملفات يتم فحصها لتوليد الأنماط المستخدمة */
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
 @source '../../app/**/*.php';
 
+/* تعريف متغيرات الثيم المخصصة (Tailwind v4 @theme) */
 @theme {
     /* Brand Colors based on Logo */
+    /* الألوان الأساسية — مستوحاة من الشعار */
     --color-primary: #0F7A5C;
     --color-primary-light: #18A07A;
     --color-primary-dark: #0B5C45;
     
+    /* ألوان العلامة التجارية */
     --color-brand-text: #2F2F2F;
     --color-brand-bg: #F9FAFB;
 
     /* Base Font Override */
+    /* تجاوز الخط الافتراضي بخط Cairo العربي */
     --font-sans: 'Cairo', sans-serif;
 }
 
+/* الأنماط الأساسية المطبقة على مستوى المستند */
 @layer base {
+    /* تطبيق اتجاه RTL وخط Cairo على مستوى HTML */
     html {
         direction: rtl;
         font-family: 'Cairo', sans-serif;
     }
 
+    /* أنماط body الأساسية: الخلفية، لون النص، التنعيم، لون التحديد */
     body {
         @apply bg-brand-bg text-brand-text antialiased selection:bg-primary selection:text-white transition-colors duration-300 font-sans;
     }
