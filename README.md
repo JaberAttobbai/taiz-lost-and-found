@@ -1,58 +1,206 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# 🔍 منصة مفقودات وموجودات تعز
 
-## About Laravel
+### Taiz Lost & Found Platform
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+منصة إلكترونية لنشر إعلانات المفقودات والموجودات في محافظة تعز، اليمن.
+ابحث عن أغراضك المفقودة أو أعلن عمّا وجدته — بسهولة وأمان.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+[![Laravel](https://img.shields.io/badge/Laravel-v13-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.3+-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![Render](https://img.shields.io/badge/Deployed_on-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://taiz-lost-and-found.onrender.com)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+[🌐 زيارة الموقع](https://taiz-lost-and-found.onrender.com) · [🐛 الإبلاغ عن مشكلة](https://github.com/JaberAttobbai/taiz-lost-and-found/issues)
 
-## Learning Laravel
+</div>
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 📋 نبذة عن المشروع
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+**منصة مفقودات وموجودات تعز** هي تطبيق ويب مبني بإطار Laravel، يهدف إلى مساعدة سكان محافظة تعز في البحث عن أغراضهم المفقودة أو الإعلان عمّا وجدوه. تتيح المنصة للمستخدمين إنشاء إعلانات مصنّفة حسب النوع (مفقود/موجود)، والفئة، والمنطقة، مع إمكانية البحث والتصفية المتقدمة.
 
-## Agentic Development
+## ✨ المميزات
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+| الميزة | الوصف |
+|--------|-------|
+| 📝 **إنشاء إعلانات** | نشر إعلانات مفقودات أو موجودات مع صور ووصف تفصيلي |
+| 🔎 **بحث وفلترة متقدم** | بحث بالكلمة المفتاحية + فلترة حسب النوع والفئة والمنطقة |
+| 📍 **تصنيف جغرافي** | أكثر من 90 حي ومنطقة في محافظة تعز |
+| 🏷️ **6 فئات رئيسية** | إلكترونيات، وثائق، مفاتيح، حقائب، مجوهرات، وأخرى |
+| 🔐 **نظام مستخدمين** | تسجيل دخول، تسجيل حساب، إدارة الملف الشخصي |
+| 📊 **لوحة تحكم** | عرض وإدارة إعلانات المستخدم الخاصة |
+| 🖼️ **رفع صور** | دعم رفع صور الأغراض المفقودة/الموجودة |
+| ✅ **تتبع الحالة** | تحديث حالة الإعلان (نشط / مسترجع) |
+| 📱 **تصميم متجاوب** | واجهة جميلة تعمل على جميع الأجهزة |
+| 🌐 **SEO متكامل** | Canonical URLs, Open Graph, Schema.org, Sitemap ديناميكي |
 
-```bash
-composer require laravel/boost --dev
+## 🛠️ التقنيات المستخدمة
 
-php artisan boost:install
+<table>
+<tr>
+<td align="center"><strong>Backend</strong></td>
+<td>
+
+- **Laravel 13** — إطار PHP الأقوى
+- **PHP 8.3+** — آخر إصدار مستقر
+- **SQLite** — قاعدة بيانات خفيفة
+- **Laravel Breeze** — نظام المصادقة
+
+</td>
+</tr>
+<tr>
+<td align="center"><strong>Frontend</strong></td>
+<td>
+
+- **Blade Templates** — محرك قوالب Laravel
+- **Tailwind CSS v4** — تصميم حديث ومتجاوب
+- **Alpine.js** — تفاعلات JavaScript خفيفة
+- **Vite** — أداة بناء سريعة
+
+</td>
+</tr>
+<tr>
+<td align="center"><strong>البنية التحتية</strong></td>
+<td>
+
+- **Render** — استضافة وتشغيل
+- **GitHub** — إدارة الكود المصدري
+- **GitHub Actions** — CI/CD (اختياري)
+
+</td>
+</tr>
+</table>
+
+## 🏗️ هيكل المشروع
+
+```
+taiz-lost-and-found/
+├── app/
+│   ├── Http/Controllers/
+│   │   ├── ItemController.php        # التحكم بالإعلانات (CRUD + بحث)
+│   │   ├── ProfileController.php     # إدارة الملف الشخصي
+│   │   └── SitemapController.php     # توليد Sitemap ديناميكي
+│   ├── Models/
+│   │   ├── Item.php                  # نموذج الإعلان
+│   │   ├── User.php                  # نموذج المستخدم
+│   │   ├── Category.php              # نموذج الفئة
+│   │   └── Neighborhood.php          # نموذج المنطقة/الحي
+│   └── Http/Requests/                # Form Requests للتحقق
+├── resources/views/
+│   ├── items/                        # صفحات الإعلانات
+│   │   ├── index.blade.php           # الصفحة الرئيسية + البحث
+│   │   ├── show.blade.php            # تفاصيل الإعلان
+│   │   ├── create.blade.php          # إنشاء إعلان
+│   │   └── edit.blade.php            # تعديل إعلان
+│   └── layouts/
+│       ├── app.blade.php             # القالب الأساسي + SEO
+│       └── guest.blade.php           # قالب صفحات المصادقة
+├── database/
+│   ├── migrations/                   # هيكل قاعدة البيانات
+│   └── seeders/                      # بيانات أولية (فئات + أحياء)
+└── public/
+    ├── robots.txt                    # تعليمات محركات البحث
+    └── google*.html                  # ملف تحقق Google
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## 📊 مخطط قاعدة البيانات (ERD)
 
-## Contributing
+```
+┌──────────┐       ┌──────────────┐       ┌──────────────┐
+│  users   │       │    items     │       │  categories  │
+├──────────┤       ├──────────────┤       ├──────────────┤
+│ id (PK)  │──────<│ user_id (FK) │       │ id (PK)      │
+│ name     │       │ category_id  │>──────│ name         │
+│ email    │       │ neighborhood │       └──────────────┘
+│ password │       │ title        │
+└──────────┘       │ description  │       ┌───────────────┐
+                   │ type         │       │ neighborhoods │
+                   │ status       │       ├───────────────┤
+                   │ image_path   │       │ id (PK)       │
+                   │ contact_info │>──────│ name          │
+                   └──────────────┘       └───────────────┘
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🚀 التشغيل محلياً
 
-## Code of Conduct
+### المتطلبات
+- PHP >= 8.3
+- Composer
+- Node.js >= 18
+- SQLite
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### خطوات التثبيت
 
-## Security Vulnerabilities
+```bash
+# 1. استنساخ المستودع
+git clone https://github.com/JaberAttobbai/taiz-lost-and-found.git
+cd taiz-lost-and-found
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# 2. تثبيت الاعتماديات
+composer install
+npm install
 
-## License
+# 3. إعداد البيئة
+cp .env.example .env
+php artisan key:generate
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# 4. إعداد قاعدة البيانات
+touch database/database.sqlite
+php artisan migrate --seed
+
+# 5. ربط التخزين
+php artisan storage:link
+
+# 6. تشغيل المشروع
+npm run dev          # في terminal أول
+php artisan serve    # في terminal ثاني
+```
+
+ثم افتح المتصفح على: **http://localhost:8000**
+
+## 🌐 SEO
+
+المشروع يتضمن نظام SEO متكامل:
+
+- ✅ **Canonical URLs** — لمنع المحتوى المكرر
+- ✅ **Open Graph** — مشاركة جميلة على Facebook, WhatsApp, Telegram
+- ✅ **Twitter Cards** — معاينة غنية على Twitter
+- ✅ **Schema.org JSON-LD** — WebSite, Organization, Article, BreadcrumbList
+- ✅ **Sitemap ديناميكي** — يتضمن فقط الإعلانات النشطة مع دعم الصور
+- ✅ **robots.txt** — توجيه ذكي لعناكب البحث
+- ✅ **meta robots** — `noindex` للصفحات الخاصة (dashboard, auth, إلخ)
+- ✅ **Pagination SEO** — `rel=prev/next` + `noindex` لصفحة 2+
+
+## 📂 المسارات الرئيسية (Routes)
+
+| المسار | الطريقة | الوصف | الحماية |
+|--------|---------|-------|---------|
+| `/` | GET | الصفحة الرئيسية + بحث وفلترة | عام |
+| `/items/{id}` | GET | تفاصيل إعلان | عام |
+| `/items/create` | GET | نموذج إنشاء إعلان | 🔐 auth |
+| `/items` | POST | حفظ إعلان جديد | 🔐 auth |
+| `/items/{id}/edit` | GET | نموذج تعديل إعلان | 🔐 auth + مالك |
+| `/items/{id}` | PUT | تحديث إعلان | 🔐 auth + مالك |
+| `/items/{id}` | DELETE | حذف إعلان | 🔐 auth + مالك |
+| `/dashboard` | GET | لوحة تحكم المستخدم | 🔐 auth |
+| `/profile` | GET | إعدادات الملف الشخصي | 🔐 auth |
+| `/sitemap.xml` | GET | خريطة الموقع | عام |
+
+## 👨‍💻 المطوّر
+
+<div align="center">
+
+**تم بناء وتطوير هذا المشروع بواسطة**
+
+### م. جابر فرحان
+
+[![GitHub](https://img.shields.io/badge/GitHub-JaberAttobbai-181717?style=for-the-badge&logo=github)](https://github.com/JaberAttobbai)
+
+</div>
+
+## 📄 الرخصة
+
+هذا المشروع مرخص تحت [رخصة MIT](https://opensource.org/licenses/MIT).
