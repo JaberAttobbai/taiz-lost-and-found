@@ -1,3 +1,37 @@
+{{--
+    =============================================
+    نموذج إنشاء إعلان جديد (items/create.blade.php)
+    =============================================
+
+    تستخدم القالب: x-app-layout (layouts/app.blade.php)
+    محمية بـ: auth middleware (يجب تسجيل الدخول)
+
+    المتغيرات الواردة من ItemController@create:
+    - $categories    → قائمة الفئات (لملء <select>)
+    - $neighborhoods → قائمة الأحياء (لملء <select>)
+
+    يرسل النموذج POST إلى route('items.store') عبر StoreItemRequest.
+    
+    حقول النموذج:
+    - type: نوع الإعلان (lost/found) — أزرار Radio بتصميم بطاقات
+    - title: عنوان الإعلان
+    - category_id: الفئة
+    - neighborhood_id: الحي
+    - description: الوصف التفصيلي
+    - contact_phone: رقم الهاتف (القيمة الافتراضية من حساب المستخدم)
+    - image: صورة اختيارية (حتى 5MB)
+
+    ملاحظات:
+    - old('field') يحتفظ بالقيم المدخلة عند فشل التحقق
+    - x-input-error يعرض أخطاء التحقق لكل حقل
+    - زر النشر يفتح Confirm Modal قبل الإرسال الفعلي
+    - enctype="multipart/form-data" مطلوب لرفع الصور
+--}}
+
+{{-- === SEO: منع فهرسة صفحة إنشاء الإعلانات === --}}
+@section('meta_robots', 'noindex, nofollow')
+@section('title', 'إضافة إعلان جديد — منصة مفقودات تعز')
+
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-3">

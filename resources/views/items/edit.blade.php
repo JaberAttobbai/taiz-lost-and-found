@@ -1,3 +1,29 @@
+{{--
+    =============================================
+    نموذج تعديل إعلان موجود (items/edit.blade.php)
+    =============================================
+
+    تستخدم القالب: x-app-layout (layouts/app.blade.php)
+    محمية بـ: auth middleware + فحص الملكية في Controller
+
+    المتغيرات الواردة من ItemController@edit:
+    - $item          → الإعلان المراد تعديله (مع بياناته الحالية)
+    - $categories    → قائمة الفئات (لملء <select>)
+    - $neighborhoods → قائمة الأحياء (لملء <select>)
+
+    الفرق عن create.blade.php:
+    - يستخدم @method('PUT') لإرسال طلب PUT بدلاً من POST
+    - يحتوي حقل status إضافي (active/returned)
+    - القيم الافتراضية تأتي من $item عبر old('field', $item->field)
+    - يعرض الصورة الحالية بجانب منطقة رفع صورة جديدة
+
+    يرسل النموذج PUT إلى route('items.update', $item) عبر UpdateItemRequest.
+--}}
+
+{{-- === SEO: منع فهرسة صفحة التعديل === --}}
+@section('meta_robots', 'noindex, nofollow')
+@section('title', 'تعديل الإعلان — منصة مفقودات تعز')
+
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-3">

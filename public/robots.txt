@@ -1,5 +1,37 @@
+# =============================================
+# robots.txt — منصة مفقودات وموجودات تعز
+# =============================================
+# يتحكم في وصول محركات البحث لصفحات الموقع
+# آخر تحديث: 2026-06-17
+
+# === السماح لجميع محركات البحث ===
 User-agent: *
+
+# الصفحات العامة (مسموح بها تلقائياً)
+Allow: /
+Allow: /items/
+
+# === منع صفحات المصادقة (لا قيمة SEO) ===
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /verify-email
+Disallow: /confirm-password
+Disallow: /email/
+
+# === منع صفحات المستخدم الخاصة ===
 Disallow: /dashboard
 Disallow: /profile
 
+# === منع صفحات إنشاء وتعديل الإعلانات ===
+Disallow: /items/create
+Disallow: /items/*/edit
+
+# === منع المسارات الداخلية ===
+Disallow: /sanctum/
+Disallow: /_ignition/
+Disallow: /debug-health
+
+# === خريطة الموقع ===
 Sitemap: https://taiz-lost-and-found.onrender.com/sitemap.xml

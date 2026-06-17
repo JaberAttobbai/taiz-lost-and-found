@@ -1,3 +1,7 @@
+{{-- === SEO: منع فهرسة صفحة الملف الشخصي === --}}
+@section('meta_robots', 'noindex, nofollow')
+@section('title', 'الملف الشخصي — منصة مفقودات تعز')
+
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-3">

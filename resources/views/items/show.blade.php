@@ -1,4 +1,91 @@
+{{--
+    =============================================
+    صفحة تفاصيل الإعلان (items/show.blade.php)
+    =============================================
+
+    تستخدم القالب: x-app-layout (layouts/app.blade.php)
+
+    المتغيرات الواردة من ItemController@show:
+    - $item → كائن الإعلان مع العلاقات المحملة (user, category, neighborhood)
+
+    === SEO ===
+    - عنوان ووصف ديناميكي من بيانات الإعلان
+    - Open Graph بصورة الإعلان (og:type = article)
+    - Schema.org Article ديناميكي
+    - BreadcrumbList للتنقل
+--}}
+
+{{-- === SEO: عنوان ديناميكي === --}}
+@section('title'){{ $item->title }} — {{ $item->type === 'lost' ? 'مفقود' : 'موجود' }} في {{ $item->neighborhood->name }}@endsection
+
+{{-- === SEO: وصف ديناميكي (أول 160 حرف من الوصف) === --}}
+@section('description'){{ Str::limit($item->description, 160) }}@endsection
+
+{{-- === SEO: Open Graph نوع المقال === --}}
+@section('og_type', 'article')
+
+{{-- === SEO: صورة المشاركة (صورة الإعلان أو الشعار) === --}}
+@if($item->image_path)
+@section('og_image', Storage::url($item->image_path))
+@endif
+
+{{-- === SEO: Schema.org Article + BreadcrumbList === --}}
+@section('schema')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": @json($item->title),
+  "description": @json(Str::limit($item->description, 300)),
+  "author": {
+    "@type": "Person",
+    "name": @json($item->user->name)
+  },
+  "datePublished": "{{ $item->created_at->toIso8601String() }}",
+  "dateModified": "{{ $item->updated_at->toIso8601String() }}",
+  @if($item->image_path)
+  "image": "{{ Storage::url($item->image_path) }}",
+  @endif
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ route('items.show', $item) }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "منصة مفقودات وموجودات تعز",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ asset('images/logo.png') }}"
+    }
+  },
+  "articleSection": @json($item->category->name),
+  "keywords": @json($item->type === 'lost' ? 'مفقود' : 'موجود') 
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "الرئيسية",
+      "item": "{{ route('home') }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": @json($item->title),
+      "item": "{{ route('items.show', $item) }}"
+    }
+  ]
+}
+</script>
+@endsection
+
 <x-app-layout>
+    {{-- Header: عنوان الصفحة + رابط العودة للقائمة --}}
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-bold text-2xl text-brand-text leading-tight">
@@ -15,13 +102,16 @@
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-lg shadow-gray-200/50 sm:rounded-2xl border border-gray-100 transition-all">
                 
-                <!-- Image Section -->
+                {{-- ===== قسم الصورة ===== --}}
+                {{-- @if: عرض الصورة إذا وُجدت، أو placeholder إذا لم تُرفق --}}
                 @if($item->image_path)
                     <div class="w-full h-[400px] bg-brand-bg relative overflow-hidden group">
+                        {{-- Storage::url() يحوّل مسار التخزين لرابط عام --}}
                         <img src="{{ Storage::url($item->image_path) }}" alt="{{ $item->title }}" class="w-full h-full object-contain transform transition-transform duration-500 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                     </div>
                 @else
+                    {{-- Placeholder: يظهر عندما لا تُرفق صورة --}}
                     <div class="w-full h-64 bg-brand-bg flex flex-col items-center justify-center text-gray-400 border-b border-gray-100">
                         <svg class="w-20 h-20 mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                         <span class="font-medium">لا توجد صورة مرفقة</span>
@@ -29,9 +119,10 @@
                 @endif
 
                 <div class="p-8 sm:p-10">
-                    <!-- Header Info -->
+                    {{-- ===== معلومات الإعلان الأساسية ===== --}}
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
                         <div>
+                            {{-- Badges: نوع الإعلان (مفقود/موجود) + الحالة (مسترجع) --}}
                             <div class="flex items-center gap-3 mb-3">
                                 @if($item->type === 'lost')
                                     <span class="px-4 py-1.5 text-sm font-bold bg-red-50 text-red-600 rounded-full border border-red-100 shadow-sm">مفقود</span>
@@ -43,18 +134,23 @@
                                     <span class="px-4 py-1.5 text-sm font-bold bg-gray-100 text-gray-600 rounded-full shadow-sm">تم الاسترجاع</span>
                                 @endif
                             </div>
+                            {{-- عنوان الإعلان --}}
                             <h1 class="text-3xl sm:text-4xl font-bold text-brand-text mb-3 leading-tight">{{ $item->title }}</h1>
+                            {{-- معلومات إضافية: الزمن النسبي + الحي + الفئة --}}
                             <div class="flex flex-wrap gap-2 text-sm text-gray-500 items-center font-medium">
+                                {{-- تاريخ النشر بصيغة نسبية (منذ X ساعات) --}}
                                 <span class="flex items-center gap-1">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                     نُشر {{ $item->created_at->diffForHumans() }}
                                 </span>
                                 <span class="text-gray-300">&bull;</span>
+                                {{-- الحي: من علاقة neighborhood --}}
                                 <span class="text-primary font-bold flex items-center gap-1">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                                     {{ $item->neighborhood->name }}
                                 </span>
                                 <span class="text-gray-300">&bull;</span>
+                                {{-- الفئة: من علاقة category --}}
                                 <span class="text-primary font-bold flex items-center gap-1">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
                                     {{ $item->category->name }}
@@ -63,14 +159,18 @@
                         </div>
                     </div>
 
-                    <!-- Description -->
+                    {{-- ===== الوصف الكامل ===== --}}
+                    {{-- whitespace-pre-wrap يحافظ على أسطر النص كما كتبها المستخدم --}}
                     <div class="prose max-w-none text-gray-600 mb-10 whitespace-pre-wrap leading-relaxed text-lg bg-brand-bg/50 p-6 rounded-2xl border border-gray-50">
                         {{ $item->description }}
                     </div>
 
-                    <!-- Contact & Poster Info -->
+                    {{-- ===== بطاقة التواصل مع الناشر ===== --}}
+                    {{-- تعرض اسم الناشر + زر الاتصال الهاتفي + زر واتساب --}}
                     <div class="bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-8 border border-primary/20 flex flex-col md:flex-row justify-between items-center gap-6 shadow-inner">
+                        {{-- معلومات الناشر --}}
                         <div class="flex items-center gap-4">
+                            {{-- الحرف الأول من الاسم كـ avatar --}}
                             <div class="w-14 h-14 rounded-full bg-white text-primary flex items-center justify-center text-xl font-bold shadow-md border border-primary/10">
                                 {{ mb_substr($item->user->name, 0, 1) }}
                             </div>
@@ -80,14 +180,18 @@
                             </div>
                         </div>
                         
+                        {{-- أزرار التواصل --}}
                         <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
                             <!-- Phone Button -->
+                            {{-- زر الاتصال: يفتح تطبيق الهاتف عبر tel: protocol --}}
                             <a href="tel:{{ $item->contact_phone }}" class="flex-1 md:flex-none inline-flex items-center justify-center gap-2 text-lg font-bold text-brand-text hover:text-primary bg-white px-6 py-3 rounded-xl shadow-md hover:shadow-lg border border-primary/20 transform transition-all duration-300 hover:-translate-y-1" dir="ltr">
                                 <span>{{ $item->contact_phone }}</span>
                                 <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
                             </a>
                             
                             <!-- WhatsApp Button -->
+                            {{-- زر واتساب: يفتح محادثة جديدة عبر wa.me --}}
+                            {{-- preg_replace يزيل كل شيء عدا الأرقام من رقم الهاتف --}}
                             <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $item->contact_phone) }}" target="_blank" class="flex-1 md:flex-none inline-flex items-center justify-center gap-2 text-lg font-bold text-white bg-gradient-to-r from-[#25D366] to-[#128C7E] px-6 py-3 rounded-xl shadow-md shadow-[#25D366]/30 hover:shadow-lg hover:shadow-[#25D366]/50 transform transition-all duration-300 hover:-translate-y-1">
                                 <span>تواصل واتساب</span>
                                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -97,14 +201,19 @@
                         </div>
                     </div>
 
-                    <!-- Actions (Only for owner) -->
+                    {{-- ===== أزرار صاحب الإعلان (تعديل + حذف) ===== --}}
+                    {{-- تظهر فقط إذا كان المستخدم الحالي هو مالك الإعلان --}}
+                    {{-- auth()->id() === $item->user_id: مقارنة مباشرة لمعرف المستخدم --}}
                     @if(auth()->id() === $item->user_id)
                         <div class="mt-10 flex flex-wrap gap-4 pt-8 border-t border-gray-100">
+                            {{-- زر التعديل: يأخذ لصفحة التعديل --}}
                             <a href="{{ route('items.edit', $item) }}" class="inline-flex items-center justify-center px-6 py-3 bg-white border-2 border-primary text-primary font-bold rounded-xl hover:bg-primary hover:text-white transition-colors duration-300">
                                 <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                 تعديل الإعلان
                             </a>
                             
+                            {{-- نموذج الحذف: يستخدم DELETE method عبر @method('DELETE') --}}
+                            {{-- الزر يفتح Confirm Modal قبل الحذف الفعلي --}}
                             <form action="{{ route('items.destroy', $item) }}" method="POST" id="delete-item-{{ $item->id }}" class="inline-block">
                                 @csrf
                                 @method('DELETE')

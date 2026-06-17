@@ -1,3 +1,14 @@
+{{--
+    =============================================
+    قالب صفحات المصادقة (layouts/guest.blade.php)
+    =============================================
+
+    يُستخدم عبر: <x-guest-layout> في صفحات login, register, forgot-password, إلخ.
+
+    === SEO ===
+    - noindex, nofollow: منع محركات البحث من فهرسة صفحات المصادقة
+    - هذه الصفحات لا قيمة SEO لها ولا ينبغي أن تظهر في نتائج البحث
+--}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="rtl">
     <head>
@@ -5,7 +16,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Taiz-Lost-Found</title>
+        {{-- SEO: منع فهرسة صفحات المصادقة --}}
+        <meta name="robots" content="noindex, nofollow">
+
+        <title>@yield('title', 'منصة مفقودات وموجودات تعز')</title>
+
         <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
 
         <!-- Fonts -->
@@ -23,7 +38,7 @@
 
             <div class="relative z-10 w-full sm:max-w-md flex flex-col items-center">
                 <a href="/" class="mb-8 block transform hover:scale-105 transition-transform duration-300">
-                    <img src="{{ asset('images/logo.png') }}" alt="اللوجو" class="w-32 h-auto drop-shadow-md">
+                    <img src="{{ asset('images/logo.png') }}" alt="منصة مفقودات وموجودات تعز" class="w-32 h-auto drop-shadow-md">
                 </a>
 
                 <div class="w-full px-8 py-10 bg-white shadow-xl shadow-primary/5 overflow-hidden sm:rounded-3xl border border-gray-100">
