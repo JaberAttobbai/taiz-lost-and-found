@@ -5,6 +5,11 @@ namespace Database\Seeders;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
 
+/**
+ * Seeder لإنشاء الفئات الأساسية للمفقودات والموجودات.
+ *
+ * يستخدم firstOrCreate لمنع تكرار الفئات عند تنفيذ db:seed أكثر من مرة.
+ */
 class CategorySeeder extends Seeder
 {
     /**
@@ -22,7 +27,9 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            Category::create(['name' => $category]);
+            // firstOrCreate: يبحث أولاً عن الفئة بالاسم، وإذا لم تُوجد يُنشئها
+            // هذا يمنع تكرار الفئات عند تنفيذ السيدر أكثر من مرة
+            Category::firstOrCreate(['name' => $category]);
         }
     }
 }

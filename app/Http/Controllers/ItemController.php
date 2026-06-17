@@ -85,8 +85,15 @@ class ItemController extends Controller implements HasMiddleware
 
         // 3. Filter by Category
         // يصفي حسب فئة الغرض (إلكترونيات، مستندات، إلخ)
+        // يبحث بكل الـ IDs المرتبطة بنفس اسم الفئة (لمعالجة التكرارات في قاعدة البيانات)
         $query->when($request->filled('category_id'), function ($q) use ($request) {
-            $q->where('category_id', $request->category_id);
+            $categoryName = Category::find($request->category_id)?->name;
+            if ($categoryName) {
+                $allIds = Category::where('name', $categoryName)->pluck('id');
+                $q->whereIn('category_id', $allIds);
+            } else {
+                $q->where('category_id', $request->category_id);
+            }
         });
 
         // 4. Filter by Neighborhood
@@ -100,7 +107,12 @@ class ItemController extends Controller implements HasMiddleware
         $items = $query->paginate(12)->withQueryString();
 
         // جلب الفئات والأحياء لعرضها في قوائم الفلترة
-        $categories = Category::orderBy('name')->get();
+        // groupBy('name') + selectRaw(MIN) لتفادي عرض فئات مكررة
+        // (يحدث إذا تم تشغيل CategorySeeder أكثر من مرة)
+        $categories = Category::selectRaw('MIN(id) as id, name')
+            ->groupBy('name')
+            ->orderBy('name')
+            ->get();
         $neighborhoods = Neighborhood::orderBy('name')->get();
 
         return view('items.index', compact('items', 'categories', 'neighborhoods'));
