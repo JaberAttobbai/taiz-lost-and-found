@@ -22,7 +22,7 @@ return new class extends Migration
         $duplicates = DB::table('categories')
             ->select('name', DB::raw('MIN(id) as keep_id'), DB::raw('COUNT(*) as cnt'))
             ->groupBy('name')
-            ->having('cnt', '>', 1)
+            ->having(DB::raw('COUNT(*)'), '>', 1)
             ->get();
 
         foreach ($duplicates as $dup) {
