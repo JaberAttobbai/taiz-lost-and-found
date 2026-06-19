@@ -28,8 +28,8 @@ sed -i "s/listen 80;/listen ${PORT};/g" /etc/nginx/sites-enabled/default
 # Start Nginx
 service nginx start
 
-# Start Queue Worker in background (for sending emails etc.)
-php artisan queue:work --sleep=3 --tries=3 --max-time=3600 &
+# Start Queue Worker in background with auto-restart (for sending emails etc.)
+(while true; do php artisan queue:work --sleep=3 --tries=3 --max-time=3600; sleep 5; done) &
 
 # Start PHP-FPM
 php-fpm
