@@ -66,7 +66,7 @@ Route::resource('items', ItemController::class);
 Route::get('/debug/mail-status', function () {
     try {
         $pending = \DB::table('jobs')->count();
-        $failed = \DB::table('failed_jobs')->latest()->take(5)->get(['id', 'payload', 'exception', 'failed_at']);
+        $failed = \DB::table('failed_jobs')->latest('failed_at')->take(5)->get(['id', 'payload', 'exception', 'failed_at']);
         
         return response()->json([
             'pending_jobs' => $pending,
