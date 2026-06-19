@@ -64,20 +64,27 @@ Route::resource('items', ItemController::class);
 | يعرض الوظائف المعلقة والفاشلة — يُحذف بعد حل مشكلة الإيميل.
 */
 Route::get('/debug/mail-status', function () {
-    $pending = \DB::table('jobs')->count();
-    $failed = \DB::table('failed_jobs')->latest()->take(5)->get(['id', 'payload', 'exception', 'failed_at']);
-    
-    return response()->json([
-        'pending_jobs' => $pending,
-        'failed_jobs_count' => \DB::table('failed_jobs')->count(),
-        'recent_failures' => $failed->map(function ($job) {
-            return [
-                'id' => $job->id,
-                'failed_at' => $job->failed_at,
-                'error' => \Str::limit($job->exception, 500),
-            ];
-        }),
-    ]);
+    try {
+        $pending = \DB::table('jobs')->count();
+        $failed = \DB::table('failed_jobs')->latest()->take(5)->get(['id', 'payload', 'exception', 'failed_at']);
+        
+        return response()->json([
+            'pending_jobs' => $pending,
+            'failed_jobs_count' => \DB::table('failed_jobs')->count(),
+            'recent_failures' => $failed->map(function ($job) {
+                return [
+                    'id' => $job->id,
+                    'failed_at' => $job->failed_at,
+                    'error' => \Str::limit($job->exception, 500),
+                ];
+            }),
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString(),
+        ], 500);
+    }
 });
 
 /*
