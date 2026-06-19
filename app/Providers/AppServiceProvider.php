@@ -39,5 +39,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::defaultStringLength(191);
+
+        \Illuminate\Support\Facades\Mail::extend('brevo', function (array $config) {
+            $key = $config['key'] ?? env('BREVO_API_KEY');
+            return \Symfony\Component\Mailer\Transport::fromDsn("brevo+api://{$key}@default");
+        });
     }
 }
